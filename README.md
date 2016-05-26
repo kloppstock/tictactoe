@@ -17,9 +17,7 @@ To build the program use `make` or `make build`.
 
 ## Documentation
 
-All parts of the documentation can be found in the `doc` folder. 
-
-The UML class diagram can be found in the `doc/uml` folder.
+The UML class diagram can be found in the `uml` folder.
 
 ## License
 
