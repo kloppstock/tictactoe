@@ -27,8 +27,6 @@ Board::Board()
     for(unsigned char x = 0; x < 3; ++x)
         for(unsigned char y = 0; y < 3; ++y)
             this->fields[x][y] = (char)' ';
-    this->player[0] = NULL;
-    this->player[1] = NULL;
 }
 
 /**
@@ -36,72 +34,6 @@ Board::Board()
  */
 Board::~Board()
 {
-    //detach players from board
-    if(this->player[PLAYER_CIRCLE] != NULL)
-        this->player[PLAYER_CIRCLE]->unsetBoard();
-    if(this->player[PLAYER_CROSS] != NULL)
-        this->player[PLAYER_CROSS]->unsetBoard();
-}
-
-/**
- * Function to register new players. This also sets the current board in given players.
- * @param player
- */
-void Board::registerPlayer(enum PlayerNum which, Player &player)
-{
-    //attach player to board
-    this->player[which] = &player;
-    this->player[which]->setBoard(*this);
-}
-
-/**
- * Run the main game loop until the game is finished. This function also notifies the players of the result of the game.
- */
-void Board::play()
-{
-    //check if 2 players are registered
-    if(this->player[PLAYER_CIRCLE] == NULL || this->player[PLAYER_CROSS] == NULL)
-    {
-        std::cerr << "Some players are missing!" << std::endl;
-        return;
-    }
-    //start loop until game is finished
-    char number_of_moves = 0;
-    struct Position last = (struct Position){FIELD_NUM_ONE, FIELD_NUM_ONE};
-    while(this->won(last) == FIELD_EMPTY && number_of_moves < 9)
-    {
-        //let individual players think about their next move and print the field
-        for(unsigned char i = 0; i < 2 && (this->won(last) == FIELD_EMPTY && number_of_moves < 9); ++i)
-        {
-            //let player make moves until one move is valid
-            bool move_successful = false;
-            while(!move_successful)
-            {
-                last = this->player[i]->getMove();
-                move_successful = this->setMove((PlayerNum)i, last);
-            }
-            this->printBoard();
-            //stop the game if all fields are taken
-            ++number_of_moves;
-        }
-    }
-    //decide who the winner is
-    enum Field winner = this->won(last);
-    if(winner == FIELD_CIRCLE)
-    {
-        this->player[PLAYER_CIRCLE]->setResult(RESULT_WON);
-        this->player[PLAYER_CROSS]->setResult(RESULT_LOST);
-    }
-    else if(winner == FIELD_CIRCLE)
-    {
-        this->player[PLAYER_CIRCLE]->setResult(RESULT_LOST);
-        this->player[PLAYER_CROSS]->setResult(RESULT_WON);
-    }
-    else
-    {
-        this->player[PLAYER_CIRCLE]->setResult(RESULT_DRAW);
-        this->player[PLAYER_CROSS]->setResult(RESULT_DRAW);
-    }
 }
 
 /**
@@ -160,45 +92,6 @@ void Board::printBoard() const
         std::cout << std::endl;
         std::cout << "+-+-+-+" << std::endl;
     }
-}
-
-/**
- * Checks if the game is already won.
- * @param last changed position
- * @return FIELD_EMPTY if nobody has one or else FIELD_CROSS or FIELD_CIRCLE
- */
-enum Field Board::won(struct Position last) const
-{
-    //check vertical
-    if((this->fields[last.x][0] == this->fields[last.x][1]) &&
-        (this->fields[last.x][1] == this->fields[last.x][2]))
-        return Board::CharToField(this->fields[last.x][0]);
-    //check horizontal
-    if((this->fields[0][last.y] == this->fields[1][last.y]) &&
-        (this->fields[1][last.y] == this->fields[2][last.y]))
-        return Board::CharToField(this->fields[0][last.y]);
-    //check if top left to bottom right is possible
-    if(((last.x == 1 && last.y == 1) ||
-        (last.x == 0 && last.y == 0)) ||
-        (last.x == 2 && last.y == 2))
-    {
-        //check top left to bottom right
-        if((this->fields[0][0] == this->fields[1][1]) &&
-            (this->fields[1][1] == this->fields[2][2]))
-            return Board::CharToField(this->fields[0][0]);
-    }
-    //check if top right to bottom left is possible
-    else if(((last.x == 1 && last.y == 1) ||
-        (last.x == 0 && last.y == 2)) ||
-        (last.x == 2 && last.y == 0))
-    {
-        //top right to bottom left
-        if((this->fields[0][2] == this->fields[1][1]) &&
-            (this->fields[1][1] == this->fields[2][0]))
-            return Board::CharToField(this->fields[0][2]);
-    }
-    //return Field.EMPTY if nobody has won yet
-    return FIELD_EMPTY;
 }
 
 /**

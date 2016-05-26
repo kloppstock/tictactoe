@@ -18,8 +18,9 @@
 
 #include <iostream>
 
-#include "include/HumanPlayer.h"
+#include "include/Game.h"
 #include "include/RandomPlayer.h"
+#include "include/HumanPlayer.h"
 
 using namespace std;
 
@@ -27,15 +28,15 @@ int main()
 {
     cout << "Let's start the match!" << endl;
 
-//    HumanPlayer *one = new HumanPlayer();
-    RandomPlayer *one = new RandomPlayer();
+    HumanPlayer *one = new HumanPlayer();
+//    RandomPlayer *one = new RandomPlayer();
     RandomPlayer *two = new RandomPlayer();
-    Board board;
+    Game game;
 
-    board.registerPlayer(PLAYER_CIRCLE, *one);
-    board.registerPlayer(PLAYER_CROSS, *two);
+    game.registerPlayer(PLAYER_CIRCLE, *one);
+    game.registerPlayer(PLAYER_CROSS, *two);
 
-    board.play();
+    game.play();
 
     delete one;
     delete two;

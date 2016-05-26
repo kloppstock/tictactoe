@@ -19,18 +19,21 @@
 #pragma once
 
 #include "include.h"
+#include "Player.h"
+#include "Board.h"
 
-class Board
+class Game
 {
     public:
-        Board();
-        ~Board();
+        Game();
+        virtual ~Game();
 
-        enum Field getField(enum FieldNum x, enum FieldNum y) const;
-        void printBoard() const;
-        bool setMove(enum PlayerNum player, struct Position position);
-        static enum Field CharToField(char c);
+        void registerPlayer(enum PlayerNum which, Player &player);
+        void play();
     protected:
     private:
-        char fields[3][3];
+        enum Field won(struct Position last) const;
+
+        Board *board;
+        Player *player[2];
 };

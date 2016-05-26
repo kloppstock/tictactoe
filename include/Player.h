@@ -21,8 +21,6 @@
 #include "include.h"
 #include "Board.h"
 
-class Board;
-
 class Player
 {
     public:
