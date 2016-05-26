@@ -15,6 +15,10 @@ In the futere there will be release branches, which contain the latest completed
 To build the program use `make` or `make build`. 
 `make clean` and make `make rebuild` do also work.
 
+## Own Implementations of a Player
+
+To create an own implementation of a player you have to create a class that inherits the Player class and overwrite the `getMove()` and `setResult()` function.
+
 ## Documentation
 
 The UML class diagram can be found in the `uml` folder.
