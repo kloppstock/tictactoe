@@ -1,3 +1,21 @@
+/* Copyright 2016 Jonas Schenke
+ *
+ * This file is part of tictactoe.
+ *
+ * tictactoe is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tictactoe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tictactoe.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "../include/Game.h"
 
 /**
@@ -72,7 +90,7 @@ void Game::play()
         this->player[PLAYER_CIRCLE]->setResult(RESULT_WON);
         this->player[PLAYER_CROSS]->setResult(RESULT_LOST);
     }
-    else if(winner == FIELD_CIRCLE)
+    else if(winner == FIELD_CROSS)
     {
         this->player[PLAYER_CIRCLE]->setResult(RESULT_LOST);
         this->player[PLAYER_CROSS]->setResult(RESULT_WON);
@@ -94,11 +112,11 @@ enum Field Game::won(struct Position last) const
     //check vertical
     if((this->board->getField(last.x, FIELD_NUM_ONE) == this->board->getField(last.x, FIELD_NUM_TWO)) &&
         (this->board->getField(last.x, FIELD_NUM_TWO) == this->board->getField(last.x, FIELD_NUM_THREE)))
-            return this->board->getField(last.x, FIELD_NUM_ONE);
+        return this->board->getField(last.x, last.y);
     //check horizontal
     if((this->board->getField(FIELD_NUM_ONE, last.y) == this->board->getField(FIELD_NUM_TWO, last.y)) &&
         (this->board->getField(FIELD_NUM_TWO, last.y) == this->board->getField(FIELD_NUM_THREE, last.y)))
-        return this->board->getField(FIELD_NUM_ONE, last.y);
+        return this->board->getField(last.x, last.y);
     //check if top left to bottom right is possible
     if(((last.x == 1 && last.y == 1) ||
         (last.x == 0 && last.y == 0)) ||
@@ -107,7 +125,7 @@ enum Field Game::won(struct Position last) const
         //check top left to bottom right
         if((this->board->getField(FIELD_NUM_ONE, FIELD_NUM_ONE) == this->board->getField(FIELD_NUM_TWO, FIELD_NUM_TWO)) &&
             (this->board->getField(FIELD_NUM_TWO, FIELD_NUM_TWO) == this->board->getField(FIELD_NUM_THREE, FIELD_NUM_THREE)))
-            return this->board->getField(FIELD_NUM_ONE, FIELD_NUM_ONE);
+            return this->board->getField(last.x, last.y);
     }
     //check if top right to bottom left is possible
     else if(((last.x == 1 && last.y == 1) ||
@@ -117,7 +135,7 @@ enum Field Game::won(struct Position last) const
         //top right to bottom left
         if((this->board->getField(FIELD_NUM_ONE, FIELD_NUM_THREE) == this->board->getField(FIELD_NUM_TWO, FIELD_NUM_TWO)) &&
             (this->board->getField(FIELD_NUM_TWO, FIELD_NUM_TWO) == this->board->getField(FIELD_NUM_THREE, FIELD_NUM_ONE)))
-            return this->board->getField(FIELD_NUM_ONE, FIELD_NUM_THREE);
+            return this->board->getField(last.x, last.y);
     }
     //return Field.EMPTY if nobody has won yet
     return FIELD_EMPTY;

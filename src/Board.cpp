@@ -83,14 +83,15 @@ bool Board::setMove(enum PlayerNum player, struct Position position)
  */
 void Board::printBoard() const
 {
-    std::cout << "+-+-+-+" << std::endl;
+    std::cout << "Y\\X 0 1 2" << std::endl;
+    std::cout << "   +-+-+-+" << std::endl;
     for(unsigned char y = 0; y < 3; ++y)
     {
-        std::cout << "|";
+        std::cout << " " << (int)y << " |";
         for(unsigned char x = 0; x < 3; ++x)
             std::cout << fields[x][y] << "|";
         std::cout << std::endl;
-        std::cout << "+-+-+-+" << std::endl;
+        std::cout << "   +-+-+-+" << std::endl;
     }
 }
 
