@@ -31,7 +31,7 @@ void Game::registerPlayer(enum PlayerNum which, Player &player)
 {
     //attach player to board
     this->player[which] = &player;
-    this->player[which]->setBoard(*this->board);
+    this->player[which]->setBoard(*this->board, which);
 }
 
 /**

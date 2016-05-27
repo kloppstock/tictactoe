@@ -29,9 +29,14 @@ class Player
 
         virtual struct Position getMove() = 0;
         virtual void setResult(enum Result won) = 0;
-        void setBoard(Board &board) {this->board = &board;}
+        void setBoard(Board &board, enum PlayerNum player)
+        {
+            this->board = &board;
+            this->player = player;
+        }
         void unsetBoard() {this->board = NULL;}
     protected:
         Board *board;
+        enum PlayerNum player;
     private:
 };

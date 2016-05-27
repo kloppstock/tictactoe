@@ -30,10 +30,9 @@ class Game
 
         void registerPlayer(enum PlayerNum which, Player &player);
         void play();
+        enum Field won(struct Position last) const;
     protected:
     private:
-        enum Field won(struct Position last) const;
-
         Board *board;
         Player *player[2];
 };

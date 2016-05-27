@@ -41,7 +41,7 @@ HumanPlayer::~HumanPlayer()
 struct Position HumanPlayer::getMove()
 {
     int x, y;
-    std::cout << "Make a move!" << std::endl;
+    std::cout << "Make a move (" << ((this->player == PLAYER_CIRCLE) ? 'O' : 'X') << ")!" << std::endl;
     std::cout  << "X = ";
     std::cin >> x;
     std::cout << "Y = ";
