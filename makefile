@@ -14,7 +14,7 @@ all: $(TARGET)
 $(TARGET): $(OBJ)
 	$(CC) $^ -o $@ $(LIBS)
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) -c -MMD $< -o $@ $(CFLAGS)
 
 clean:
