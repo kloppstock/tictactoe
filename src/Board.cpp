@@ -58,8 +58,13 @@ enum Field Board::getField(uint8_t x, uint8_t y) const {
  * @return true, if the requested field is empty
  */
 bool Board::setMove(enum PlayerNum player, struct Position position) {
+	//return false if field is out of reach
+	if(position.x >= 3 || position.y >= 3) {
+        std::cerr << "Invalid move!" << std::endl;
+        return false;
+    }
+	
     //return false if this field is already set
-
     if(fields[position.x][position.y] != ' ') {
         std::cerr << "Invalid move!" << std::endl;
         return false;
