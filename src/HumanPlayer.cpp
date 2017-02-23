@@ -21,44 +21,43 @@
 /**
  * RandomPlayer constructor.
  */
-HumanPlayer::HumanPlayer()
-{
-    std::cout << "Let's begin!" << std::endl;
+HumanPlayer::HumanPlayer() {
+    std::cout << "Let's begin!\n";
 }
 
 /**
  * RandomPlayer destructor.
  */
-HumanPlayer::~HumanPlayer()
-{
-    std::cout << "See you later!" << std::endl;
+HumanPlayer::~HumanPlayer() {
+    std::cout << "See you later!\n";
 }
 
 /**
  * Read input from user and report them to the board.
  * @param position
  */
-struct Position HumanPlayer::getMove()
-{
-    int x, y;
-    std::cout << "Make a move (" << ((this->player == PLAYER_CIRCLE) ? 'O' : 'X') << ")!" << std::endl;
+struct Position HumanPlayer::getMove() {
+    unsigned int x, y;
+	
+    std::cout << "Make a move (" << ((this->player == PLAYER_CIRCLE) ? 'O' : 'X') << ")!\n";
     std::cout  << "X = ";
     std::cin >> x;
     std::cout << "Y = ";
     std::cin >> y;
-    return (struct Position){(FieldNum)x, (FieldNum)y};
+	std::cout << "\n";
+	
+    return (struct Position){(uint8_t)x, (uint8_t)y};
 }
 
 /**
  * Print a message on the screen depending on the result of the game.
  * @param result of the game
  */
-void HumanPlayer::setResult(enum Result won)
-{
+void HumanPlayer::setResult(enum Result won) {
     if(won == RESULT_DRAW)
-        std::cout << "Looks like a draw!" << std::endl;
+        std::cout << "Looks like a draw!\n";
     else if(won == RESULT_WON)
-        std::cout << "Yay! You won!" << std::endl;
+        std::cout << "Yay! You won!\n";
     else
-        std::cout << "Looser!" << std::endl;
+        std::cout << "Looser!\n";
 }

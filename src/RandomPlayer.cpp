@@ -21,55 +21,52 @@
 /**
  * RandomPlayer constructor.
  */
-RandomPlayer::RandomPlayer()
-{
+RandomPlayer::RandomPlayer() {
     srand(time(NULL));
-    std::cout << "Starting random player!" << std::endl;
+    std::cout << "Starting random player!\n";
 }
 
 /**
  * RandomPlayer destructor.
  */
-RandomPlayer::~RandomPlayer()
-{
-    std::cout << "Shutting down random player" << std::endl;
+RandomPlayer::~RandomPlayer() {
+    std::cout << "Shutting down random player\n";
 }
 
 /**
  * Randomly generates a move. If there are still free fields, the function will return the position of an empty field.
  * @return position of a free field
  */
-struct Position RandomPlayer::getMove()
-{
-    std::cout << "Deciding ... " << std::endl;
-    char x = rand() % 3;
-    char y = rand() % 3;
+struct Position RandomPlayer::getMove() {
+    uint8_t x = rand() % 3;
+    uint8_t y = rand() % 3;
     char fails = 0;
-    while(((board->getField((FieldNum)x, (FieldNum)0) != FIELD_EMPTY ||
-        board->getField((FieldNum)x, (FieldNum)1) != FIELD_EMPTY) ||
-        board->getField((FieldNum)x, (FieldNum)2) != FIELD_EMPTY) &&
-        fails < 2)
-    {
+	
+    std::cout << "Deciding ... \n";
+	
+    while(((board->getField(x, 0) != FIELD_EMPTY || board->getField(x, 1) != FIELD_EMPTY) ||
+		   board->getField(x, 2) != FIELD_EMPTY) && fails < 2) {
         x = (x + 1) % 3;
         ++fails;
     }
+	
     fails = 0;
-    while(this->board->getField((FieldNum)x, (FieldNum)y) != FIELD_EMPTY &&
-        fails < 2)
-    {
+	
+    while(board->getField(x, y) != FIELD_EMPTY && fails < 2) {
         y = (y + 1) % 3;
         ++fails;
     }
-    std::cout << "Setting (" << (int)x << "|" << (int)y << ")!" << std::endl;
-    return (struct Position){(FieldNum)x, (FieldNum)y};
+	
+    std::cout << "Setting (" << (int)x << "|" << (int)y << ")!\n";
+	
+    return (struct Position){x, y};
 }
 
 /**
  * Print a message on the screen depending on the result of the game.
  * @param the result of the match
  */
-void RandomPlayer::setResult(enum Result won)
-{
+void RandomPlayer::setResult(enum Result won) {
     std::cout << "I'm done! ";
     if(won == RESULT_DRAW)
         std::cout << "It's a draw!";
@@ -77,5 +74,5 @@ void RandomPlayer::setResult(enum Result won)
         std::cout << "I lost!";
     else
         std::cout << "I won!";
-    std::cout << std::endl;
+    std::cout << "\n";
 }

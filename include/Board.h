@@ -20,17 +20,15 @@
 
 #include "include.h"
 
-class Board
-{
-    public:
-        Board();
-        ~Board();
+class Board {
+ public:
+	Board();
 
-        enum Field getField(enum FieldNum x, enum FieldNum y) const;
-        void printBoard() const;
-        bool setMove(enum PlayerNum player, struct Position position);
-        static enum Field CharToField(char c);
-    protected:
-    private:
-        char fields[3][3];
+	enum Field getField(uint8_t x, uint8_t y) const;
+	void printBoard() const;
+	bool setMove(enum PlayerNum player, struct Position position);
+	static enum Field CharToField(char c);
+ protected:
+ private:
+	char fields[3][3];
 };

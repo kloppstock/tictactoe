@@ -1,16 +1,23 @@
-CC = g++
-LIBS = 
-CFLAGS = -O2 -Wall -Wextra
-FILES = main.cpp src/Game.cpp src/Board.cpp src/HumanPlayer.cpp src/RandomPlayer.cpp
-O_FILES = main.o src/Game.o src/Board.o src/HumanPlayer.o src/RandomPlayer.o
+LIBS=
+TARGET=tictactoe
 
-TARGET = tictactoe
+CC=g++
+CFLAGS=-O2 -Wall -Wextra
 
-build: $(FILES)
-	$(CC) -o $(TARGET) $(FILES) $(LIBS) $(CFLAGS)
+SRC=$(wildcard src/*.cpp) $(wildcard *.cpp)
+OBJ=$(SRC:.cpp=.o)
+DEP=$(SRC:.cpp=.d)
+
+.PHONY: clean all
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $^ -o $@ $(LIBS)
+
+%.o: %.c
+	$(CC) -c -MMD $< -o $@ $(CFLAGS)
 
 clean:
-	rm -f $(O_FILES)
-	rm -f $(TARGET)
+	rm -f $(OBJ) $(TARGET) $(DEP)
 
-rebuild: clean build
+-include $(DEP)

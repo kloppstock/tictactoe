@@ -22,17 +22,16 @@
 #include "Player.h"
 #include "Board.h"
 
-class Game
-{
-    public:
-        Game();
-        virtual ~Game();
+class Game {
+ public:
+	Game();
+	virtual ~Game();
 
-        void registerPlayer(enum PlayerNum which, Player &player);
-        void play();
-        enum Field won(struct Position last) const;
-    protected:
-    private:
-        Board *board;
-        Player *player[2];
+	void registerPlayer(enum PlayerNum which, Player &player);
+	void play();
+	enum Field won(struct Position last) const;
+ protected:
+ private:
+	Board *board;
+	Player *player[2];
 };

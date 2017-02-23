@@ -19,52 +19,39 @@
 #pragma once
 
 #include <iostream>
-#include <time.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstdint>
+#include <ctime>
 
 /**
  * Enumeration for the player.
  */
-enum PlayerNum
-{
-    PLAYER_CROSS,
-    PLAYER_CIRCLE
+enum PlayerNum {
+	PLAYER_CROSS,
+	PLAYER_CIRCLE
 };
 
 /**
  * Enumeration for the fields.
  */
-enum Field
-{
-    FIELD_EMPTY,
-    FIELD_CROSS,
-    FIELD_CIRCLE
-};
-
-/**
- * Enumeration for the field numbers.
- */
-enum FieldNum
-{
-    FIELD_NUM_ONE,
-    FIELD_NUM_TWO,
-    FIELD_NUM_THREE
+enum Field {
+	FIELD_EMPTY,
+	FIELD_CROSS,
+	FIELD_CIRCLE
 };
 
 /**
  * Enumeration for the result.
  */
-enum Result
-{
-    RESULT_WON,
-    RESULT_LOST,
-    RESULT_DRAW
+enum Result {
+	RESULT_WON,
+	RESULT_LOST,
+	RESULT_DRAW
 };
 
 /**
  * Enumeration for the position.
  */
-struct Position
-{
-    enum FieldNum x, y;
+struct Position {
+    uint8_t x, y;
 };
