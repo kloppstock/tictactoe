@@ -2,7 +2,7 @@ LIBS=
 TARGET=tictactoe
 
 CC=g++
-CFLAGS=-O2 -Wall -Wextra
+CFLAGS=-O2 -Wall -Wextra -std=c++11
 
 SRC=$(wildcard src/*.cpp) $(wildcard *.cpp)
 OBJ=$(SRC:.cpp=.o)
