@@ -28,7 +28,8 @@ class Game {
 	virtual ~Game();
 
 	void registerPlayer(enum PlayerNum which, Player &player);
-	void play();
+	struct Statistic play(bool printBoard = true);
+	enum Field bench(unsigned int games);
 	enum Field won(struct Position last) const;
  protected:
  private:

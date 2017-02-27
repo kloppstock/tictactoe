@@ -29,14 +29,21 @@ int main()
     cout << "Let's start the match!" << endl;
 
     HumanPlayer *one = new HumanPlayer();
-//    RandomPlayer *one = new RandomPlayer();
     RandomPlayer *two = new RandomPlayer();
     Game game;
+	enum Field winner;
 
     game.registerPlayer(PLAYER_CIRCLE, *one);
     game.registerPlayer(PLAYER_CROSS, *two);
 
-    game.play();
+    //game.play();
+	winner = game.bench(10);
+	if(winner == FIELD_CROSS)
+		std::cout << "Cross wins!\n";
+	else if(winner == FIELD_CIRCLE)
+		std::cout << "Circle wins!\n";
+	else
+		std::cout << "Draw!";
 
     delete one;
     delete two;
