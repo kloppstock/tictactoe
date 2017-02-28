@@ -37,7 +37,7 @@ int main()
     game.registerPlayer(PLAYER_CROSS, *two);
 
     //game.play();
-	winner = game.bench(10);
+	winner = game.bench(2);
 	if(winner == FIELD_CROSS)
 		std::cout << "Cross wins!\n";
 	else if(winner == FIELD_CIRCLE)

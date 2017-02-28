@@ -75,6 +75,9 @@ struct Statistic Game::play(bool printBoard) {
 		for(unsigned char i = 0; i < 2 && won(last) == FIELD_EMPTY && number_of_moves < 9; ++i) {
 			//let player make moves until one move is valid
 			bool move_successful = false;
+			
+			if(printBoard)
+				board->printBoard();
 
 			++number_of_turns[i];
 			//start timer
@@ -95,18 +98,9 @@ struct Statistic Game::play(bool printBoard) {
 					printf("ERROR: couldn't get time!\n");
 					exit(EXIT_FAILURE);
 			}
-
-			result.avg_move_time[i] += 
-			err = clock_gettime(CLOCK_REALTIME, &begin[i]);
-			if(err == -1) {
-					printf("ERROR: couldn't get time!\n");
-					exit(EXIT_FAILURE);
-			}
-			result.avg_move_time[i] += (double)(end[i].tv_sec - begin[i].tv_sec) * 1000000.0
-				+ (double)(end[i].tv_nsec - begin[i].tv_nsec) / 1000.0;
 			
-			if(printBoard)
-				board->printBoard();
+			result.avg_move_time[i] += (double)(end[i].tv_sec - begin[i].tv_sec) * 1000000.0
+				+ (double)(end[i].tv_nsec - begin[i].tv_nsec) / 1000.0;; 
 			
 			//stop the game if all fields are taken
 			++number_of_moves;
@@ -143,23 +137,25 @@ enum Field Game::bench(unsigned int games) {
 	struct Statistic stat;
 	
 	for(unsigned int i = 0; i < games; ++i) {
-		stat = play(false);
+		stat = play(true);
+		board->clear();
+		
 		if(stat.winner == FIELD_CROSS) {
 			++number_of_wins[0];
 		} else if(stat.winner == FIELD_CIRCLE) {
 			++number_of_wins[1];
 		}
 		avg_move_time[0] += stat.avg_move_time[0];
-		avg_move_time[0] += stat.avg_move_time[0];
+		avg_move_time[1] += stat.avg_move_time[1];
 	}
-
+   
 	if(number_of_wins[0] > number_of_wins[1])
 		return FIELD_CROSS;
-	else if(number_of_wins[0] > number_of_wins[1])
+	else if(number_of_wins[0] < number_of_wins[1])
 		return FIELD_CIRCLE;
 	else if(avg_move_time[0] < avg_move_time[1])
 		return FIELD_CROSS;
-	else if(avg_move_time[0] < avg_move_time[1])
+	else if(avg_move_time[0] > avg_move_time[1])
 		return FIELD_CIRCLE;
 	return FIELD_EMPTY;
 }

@@ -93,6 +93,15 @@ void Board::printBoard() const {
     }
 }
 
+/*
+ * Clears the Board!
+ */
+void Board::clear() {
+	for(unsigned int y = 0; y < 3; ++y)
+		for(unsigned int x = 0; x < 3; ++x)
+			fields[x][y] = ' ';
+}
+
 /**
  * A static function to convert a character to the associated field value.
  * @param character
