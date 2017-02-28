@@ -53,11 +53,18 @@ void Game::registerPlayer(enum PlayerNum which, Player &player) {
 /**
  * Run the main game loop until the game is finished. This function also notifies the players of the result of the game.
  */
-void Game::play() {
+struct Statistic Game::play(bool printBoard) {
+	struct Statistic result = {{0.0, 0.0}, FIELD_EMPTY};
+	int err = 0;
+	struct timespec begin[2] = {{0, 0}, {0, 0}};
+	struct timespec end[2] = {{0, 0}, {0, 0}};
+	unsigned int number_of_turns[2] = {0, 0};
+	
     //check if 2 players are registered
     if(player[PLAYER_CIRCLE] == NULL || player[PLAYER_CROSS] == NULL) {
 		std::cerr << "Some players are missing!" << std::endl;
-		return;
+		result.winner = FIELD_EMPTY;
+		return result;
 	}
 	
     //start loop until game is finished
@@ -68,12 +75,32 @@ void Game::play() {
 		for(unsigned char i = 0; i < 2 && won(last) == FIELD_EMPTY && number_of_moves < 9; ++i) {
 			//let player make moves until one move is valid
 			bool move_successful = false;
+			
+			if(printBoard)
+				board->printBoard();
+
+			++number_of_turns[i];
+			//start timer
+			err = clock_gettime(CLOCK_REALTIME, &begin[i]);
+			if(err == -1) {
+					printf("ERROR: couldn't get time!\n");
+					exit(EXIT_FAILURE);
+			}
+					
 			while(!move_successful) {
 				last = player[i]->getMove();
 				move_successful = board->setMove((PlayerNum)i, last);
 			}
 			
-			board->printBoard();
+			//read timer
+			err = clock_gettime(CLOCK_REALTIME, &end[i]);
+			if(err == -1) {
+					printf("ERROR: couldn't get time!\n");
+					exit(EXIT_FAILURE);
+			}
+			
+			result.avg_move_time[i] += (double)(end[i].tv_sec - begin[i].tv_sec) * 1000000.0
+				+ (double)(end[i].tv_nsec - begin[i].tv_nsec) / 1000.0;; 
 			
 			//stop the game if all fields are taken
 			++number_of_moves;
@@ -82,6 +109,9 @@ void Game::play() {
 	
     //decide who the winner is
     enum Field winner = won(last);
+	result.winner = winner;
+	result.avg_move_time[0] /= number_of_turns[0];
+   	result.avg_move_time[1] /= number_of_turns[1];
 	
     if(winner == FIELD_CIRCLE) {
 		player[PLAYER_CIRCLE]->setResult(RESULT_WON);
@@ -93,6 +123,41 @@ void Game::play() {
 		player[PLAYER_CIRCLE]->setResult(RESULT_DRAW);
 		player[PLAYER_CROSS]->setResult(RESULT_DRAW);
 	}
+	return result;
+}
+
+/*
+ * Play x number of games and return the average winner.
+ * @param number of games
+ * @return best player
+ */
+enum Field Game::bench(unsigned int games) {
+	unsigned number_of_wins[2] = {0, 0};
+	double avg_move_time[2] = {0.0, 0.0};
+	struct Statistic stat;
+	
+	for(unsigned int i = 0; i < games; ++i) {
+		stat = play(true);
+		board->clear();
+		
+		if(stat.winner == FIELD_CROSS) {
+			++number_of_wins[0];
+		} else if(stat.winner == FIELD_CIRCLE) {
+			++number_of_wins[1];
+		}
+		avg_move_time[0] += stat.avg_move_time[0];
+		avg_move_time[1] += stat.avg_move_time[1];
+	}
+   
+	if(number_of_wins[0] > number_of_wins[1])
+		return FIELD_CROSS;
+	else if(number_of_wins[0] < number_of_wins[1])
+		return FIELD_CIRCLE;
+	else if(avg_move_time[0] < avg_move_time[1])
+		return FIELD_CROSS;
+	else if(avg_move_time[0] > avg_move_time[1])
+		return FIELD_CIRCLE;
+	return FIELD_EMPTY;
 }
 
 /**

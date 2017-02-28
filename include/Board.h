@@ -26,6 +26,7 @@ class Board {
 
 	enum Field getField(uint8_t x, uint8_t y) const;
 	void printBoard() const;
+	void clear();
 	bool setMove(enum PlayerNum player, struct Position position);
 	static enum Field CharToField(char c);
  protected:

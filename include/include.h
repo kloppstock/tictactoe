@@ -50,8 +50,16 @@ enum Result {
 };
 
 /**
- * Enumeration for the position.
+ * Structure for the position.
  */
 struct Position {
     uint8_t x, y;
+};
+
+/*
+ * Structure for game statistics.
+ */
+struct Statistic {
+	double avg_move_time[2];
+	enum Field winner;
 };
